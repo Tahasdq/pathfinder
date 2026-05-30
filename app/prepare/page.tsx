@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, Suspense } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { 
@@ -22,7 +22,7 @@ import { Button } from '@/components/ui/button';
 import { useAppStore } from '@/lib/store';
 import { useSession } from 'next-auth/react';
 
-export default function PreparePage() {
+function PrepareContent() {
   const { data: session, status } = useSession();
   const setSignInModalOpen = useAppStore(state => state.setSignInModalOpen);
   
@@ -379,5 +379,13 @@ export default function PreparePage() {
         </AnimatePresence>
       </div>
     </main>
+  );
+}
+
+export default function PreparePage() {
+  return (
+    <Suspense fallback={<main className="min-h-screen bg-[#050505] flex items-center justify-center text-zinc-500 font-mono text-xs uppercase tracking-widest">Initializing Interview Lab...</main>}>
+      <PrepareContent />
+    </Suspense>
   );
 }

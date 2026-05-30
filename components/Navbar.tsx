@@ -3,13 +3,21 @@
 import { Compass, LogOut, User } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useSession, signOut } from "next-auth/react";
-import { useState } from 'react';
 import { SignInModal } from './SignInModal';
 import Link from 'next/link';
+import { useAppStore } from '@/lib/store';
+import { useEffect } from 'react';
 
 export function Navbar() {
   const { data: session, status } = useSession();
-  const [isSignInOpen, setIsSignInOpen] = useState(false);
+  const isSignInModalOpen = useAppStore((state) => state.isSignInModalOpen);
+  const setSignInModalOpen = useAppStore((state) => state.setSignInModalOpen);
+  useEffect(() => {
+  if (session) {
+    setSignInModalOpen(false); // Close immediately when session exists
+  }
+}, [session, setSignInModalOpen]);
+
   
   return (
     <>
@@ -68,7 +76,7 @@ export function Navbar() {
                 </div>
               ) : (
                 <button 
-                  onClick={() => setIsSignInOpen(true)} 
+                  onClick={() => setSignInModalOpen(true)} 
                   className="text-xs px-5 py-2 rounded-full bg-white text-black hover:bg-zinc-200 transition-all font-bold active:scale-95"
                 >
                   Sign In
@@ -78,7 +86,7 @@ export function Navbar() {
           </div>
         </div>
       </nav>
-      <SignInModal isOpen={isSignInOpen} onClose={() => setIsSignInOpen(false)} />
+      <SignInModal isOpen={isSignInModalOpen} onClose={() => setSignInModalOpen(false)} />
     </>
   );
 }

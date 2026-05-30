@@ -86,12 +86,6 @@ export function InputSection({ setLoading, loading }: InputSectionProps) {
       return;
     }
     
-    const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-    if (!apiKey) {
-      alert("API Key is missing. Please add NEXT_PUBLIC_GEMINI_API_KEY to your .env.local file and restart the server.");
-      return;
-    }
-
     setLoading(true);
     setProgress(0);
     let messageIndex = 0;

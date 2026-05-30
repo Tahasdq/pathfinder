@@ -29,6 +29,10 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: 'pathfinder-storage',
+      partialize: (state) => ({
+        strategyResult: state.strategyResult,
+        completedRoadmapTasks: state.completedRoadmapTasks,
+      }),
     }
   )
 );
